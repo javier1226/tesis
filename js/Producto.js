@@ -1,14 +1,18 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var funcion;
+    var edit=false;
     $('.select2').select2();
     rellenar_laboratorios();
     rellenar_tipos();
     rellenar_presentaciones();
     buscar_producto();
 
+    //carga laboratorio en vista producto
     function rellenar_laboratorios() {
         funcion = "rellenar_laboratorios";
-        $.post('../controller/LaboratorioController.php', { funcion }, (response) => {
+        $.post('../controller/LaboratorioController.php', {
+            funcion
+        }, (response) => {
             const laboratorios = JSON.parse(response);
             let template = '';
             laboratorios.forEach(laboratorio => {
@@ -22,7 +26,9 @@ $(document).ready(function() {
 
     function rellenar_tipos() {
         funcion = "rellenar_tipos";
-        $.post('../controller/TipoController.php', { funcion }, (response) => {
+        $.post('../controller/TipoController.php', {
+            funcion
+        }, (response) => {
             const tipos = JSON.parse(response);
             let template = '';
             tipos.forEach(tipo => {
@@ -36,7 +42,9 @@ $(document).ready(function() {
 
     function rellenar_presentaciones() {
         funcion = "rellenar_presentaciones";
-        $.post('../controller/PresentacionController.php', { funcion }, (response) => {
+        $.post('../controller/PresentacionController.php', {
+            funcion
+        }, (response) => {
             const presentaciones = JSON.parse(response);
             let template = '';
             presentaciones.forEach(presentacion => {
@@ -49,6 +57,7 @@ $(document).ready(function() {
     }
 
     $('#form-crear-producto').submit(e => {
+        let id = $('#id_edit_prod').val();
         let nombre = $('#nombre_producto').val();
         let concentracion = $('#concentracion').val();
         let adicional = $('#adicional').val();
@@ -57,33 +66,59 @@ $(document).ready(function() {
         let tipo = $('#tipo').val();
         let presentacion = $('#presentacion').val();
         //console.log(nombre + " " + concentracion + " " + adicional + " " + precio + "  " + laboratorio + "  " + tipo + "  " + presentacion);
-        funcion = "crear";
-        $.post('../controller/ProductoController.php', { funcion, nombre, concentracion, adicional, precio, laboratorio, tipo, presentacion }, (response) => {
+        //funcion = "crear";
+        if(edit=true){
+            funcion="editar";
+        }else{
+            funcion="crear";
+        }
+        $.post('../controller/ProductoController.php', {
+            funcion,
+            id,
+            nombre,
+            concentracion,
+            adicional,
+            precio,
+            laboratorio,
+            tipo,
+            presentacion
+        }, (response) => {
+            
             if (response == 'add') {
                 $('#add').hide('slow');
                 $('#add').show(1000);
                 $('#add').hide(2000);
                 $('#form-crear-producto').trigger('reset');
+                buscar_producto();
             }
-            if (response == 'noadd') {
+            if (response == 'edit') {
+                $('#edit_prod').hide('slow');
+                $('#edit_prod').show(1000);
+                $('#edit_prod').hide(2000);
+                $('#form-crear-producto').trigger('reset');
+                buscar_producto();
+            }
+            else{
                 $('#noadd').hide('slow');
                 $('#noadd').show(1000);
                 $('#noadd').hide(2000);
                 $('#form-crear-producto').trigger('reset');
-            }
-            buscar_producto();
+            }            
         });
         e.preventDefault();
     });
 
     function buscar_producto(consulta) {
         funcion = "buscar";
-        $.post('../controller/ProductoController.php', { consulta, funcion }, (response) => {
+        $.post('../controller/ProductoController.php', {
+            consulta,
+            funcion
+        }, (response) => {
             const productos = JSON.parse(response);
             let template = '';
             productos.forEach(producto => {
                 template += `
-                <div prodId="${producto.id}" prodStock="${producto.stock}" prodNombre="${producto.nombre}"  prodPrecio="${producto.precio}" prodConcentracion="${producto.concentracion}" prodAdicional="${producto.adicional}" prodLaboratorio="${producto.laboratorio}" prodAvatar="${producto.avatar}" prodPresentacion="${producto.presentacion}"  prodTipo="${producto.tipo}"class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                <div prodId="${producto.id}" prodNombre="${producto.nombre}"  prodPrecio="${producto.precio}" prodConcentracion="${producto.concentracion}" prodAdicional="${producto.adicional}" prodLaboratorio="${producto.laboratorio_id}" prodAvatar="${producto.avatar}" prodPresentacion="${producto.presentacion_id}"  prodTipo="${producto.tipo_id}"class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
                 <div class="card bg-light">
                   <div class="card-header text-muted border-bottom-0">
                    <i class="fas fa-lg fa-cubes mr-1"></i>${producto.stock}
@@ -108,10 +143,10 @@ $(document).ready(function() {
                   </div>
                   <div class="card-footer">
                     <div class="text-right">
-                      <button class="avatar btn btn-sm bg-teal" type="button" data-target="#cambiologo">
+                      <button class="avatar btn btn-sm bg-teal" type="button" data-toggle="modal" data-target="#cambiologo">
                         <i class="fas fa-image"></i>
                       </button>
-                      <button  class="editar btn btn-sm btn-success">
+                      <button  class="editar btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#crearproducto">
                         <i class="fas fa-pencil-alt"></i> 
                       </button>
                       <button  class="lote btn btn-sm btn-primary">
@@ -129,7 +164,7 @@ $(document).ready(function() {
             $('#productos').html(template);
         })
     }
-    $(document).on("keyup", "#buscar-producto", function() {
+    $(document).on("keyup", "#buscar-producto", function () {
         let valor = $(this).val();
         if (valor != "") {
             buscar_producto(valor);
@@ -143,8 +178,67 @@ $(document).ready(function() {
         const elemento = $(this)[0].activeElement.parentElement.parentElement.parentElement.parentElement;
         const id = $(elemento).attr('prodId');
         const avatar = $(elemento).attr('prodAvatar');
-        console.log(id + ' ' + avatar);
+        const nombre = $(elemento).attr('prodNombre');
+        $('#funcion').val(funcion);
+        $('#id_logo_prod').val(id);
+        $('#avatar').val(avatar);
+        $('#logoactual').attr('src', avatar);
+        $('#nombre_logo').html(nombre);
+        //console.log(id + ' ' + avatar);
     });
+
+    $('#form-logo').submit(e => {
+        let formData = new FormData($('#form-logo')[0]);
+        $.ajax({
+            url: '../controller/ProductoController.php',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            const json = JSON.parse(response);
+            if(json.alert=='edit'){
+                $('#logoactual').attr('src',json.ruta);
+                $('#edit').hide('slow');
+                $('#edit').show(1000);
+                $('#edit').hide(2000);
+                $('#form-logo').trigger('reset');
+                buscar_producto()
+            }else{
+                $('#noedit').hide('slow');
+                $('#noedit').show(1000);
+                $('#noedit').hide(2000);
+                $('#form-logo').trigger('reset');
+            }
+        });
+        e.preventDefault();
+    });
+
+    $(document).on('click', '.editar', (e) => {        
+        const elemento = $(this)[0].activeElement.parentElement.parentElement.parentElement.parentElement;
+        const id = $(elemento).attr('prodId');
+        const nombre = $(elemento).attr('prodNombre');
+        const concentracion = $(elemento).attr('prodConcentracion');
+        const adicional = $(elemento).attr('prodAdicional');
+        const precio = $(elemento).attr('prodPrecio');
+        const laboratorio = $(elemento).attr('prodLaboratorio');
+        const tipo = $(elemento).attr('prodTipo');
+        const presentacion = $(elemento).attr('prodPresentacion');
+
+        $('#id_edit_prod').val(id);
+        $('#nombre_producto').val(nombre);
+        $('#concentracion').val(concentracion);
+        $('#adicional').val(adicional);
+        $('#precio').val(precio);
+        $('#laboratorio').val(laboratorio).trigger('change');
+        $('#tipo').val(tipo).trigger('change');
+        $('#presentacion').val(presentacion).trigger('change');
+        edit = true;
+
+        //console.log(id + ' ' + avatar);
+    });
+
 
     // $(document).on("click", ".avatar", (e) => {
     //     funcion = "cambiar_logo";
