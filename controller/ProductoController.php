@@ -80,3 +80,8 @@
     }
       
    }
+   
+   if($_POST['funcion']=='borrar'){
+      $id=$_POST['id'];
+      $producto->borrar($id);
+   }

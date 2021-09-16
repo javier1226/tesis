@@ -98,12 +98,19 @@ $(document).ready(function () {
                 $('#form-crear-producto').trigger('reset');
                 buscar_producto();
             }
-            else{
+            if (response == 'noadd') {
                 $('#noadd').hide('slow');
                 $('#noadd').show(1000);
                 $('#noadd').hide(2000);
                 $('#form-crear-producto').trigger('reset');
-            }            
+            }  
+            if (response == 'noedit') {
+                $('#noadd').hide('slow');
+                $('#noadd').show(1000);
+                $('#noadd').hide(2000);
+                $('#form-crear-producto').trigger('reset');
+            }
+            edit=false;
         });
         e.preventDefault();
     });
@@ -237,6 +244,63 @@ $(document).ready(function () {
         edit = true;
 
         //console.log(id + ' ' + avatar);
+    });
+
+    $(document).on("click", ".borrar", (e) => {
+        funcion = "borrar";
+        const elemento = $(this)[0].activeElement.parentElement.parentElement.parentElement.parentElement;
+        const id = $(elemento).attr('prodId');
+        const nombre = $(elemento).attr('prodNombre');
+        const avatar = $(elemento).attr('prodAvatar');
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger mr-1'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Desea eliminar ' + nombre + '?',
+            text: "No podrás revertir esto!",
+            imageUrl: '' + avatar + '',
+            imageWidth: 100,
+            imageHeight: 100,
+            showCancelButton: true,
+            confirmButtonText: 'Sí,borra esto!',
+            cancelButtonText: 'No, cancelar!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.post('../controller/ProductoController.php', { id, funcion }, (response) => {
+                    if (response == 'borrado') {
+                        swalWithBootstrapButtons.fire(
+                            'Borrado!',
+                            'El producto ' + nombre + ' fue eliminado.',
+                            'success'
+                        )
+                        buscar_producto();
+                    } else {
+                        swalWithBootstrapButtons.fire(
+                            'No se pudo borrar!',
+                            'El producto ' + nombre + 'no fue borrado porque esta siendo usado en un lote.',
+                            'error'
+                        )
+
+                    }
+                })
+
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'El producto ' +
+                    nombre + ' no fue borrado :)',
+                    'error'
+                )
+
+            }
+        })
+
     });
 
 
