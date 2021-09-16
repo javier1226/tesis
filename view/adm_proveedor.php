@@ -8,42 +8,37 @@ if($_SESSION['us_tipo']==1 ||$_SESSION['us_tipo']==3 ){
 <?php
     include_once 'layouts/nav.php';
 ?>
-<!-- Modal
-<div class="modal fade" id="confirmar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal logo -->
+<div class="modal fade" id="cambiologo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmar acción</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Cambiar Logo</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="text-center">
-           <img  id='avatar3' src="../img/avatar.png" class="profile-user-img img-fluid img-circle">
+           <img id='logoactual' src="../img/avatar.png" class="profile-user-img img-fluid img-circle">
         </div>
         <div class="text-center">
-          <b>
-            <?php
-               echo $_SESSION['nombre_us'];
-            ?>
+          <b id="nombre_logo">
+           
           </b>
         </div>
-        <span>Necesitamos su password para continuar</span>
-        <div class="alert alert-success text-center" id="confirmado" style='display:none;'>
-                <span><i class="fas fa-check m-1" ></i>Se modifico al usuario</span>
+        <div class="alert alert-success text-center" id="edit-prov" style='display:none;'>
+                <span><i class="fas fa-check m-1" ></i>El logo se editó</span>
         </div>
-        <div class="alert alert-danger text-center" id="rechazado" style='display:none;'>
-                <span><i class="fas fa-times m-2"></i>El password no es correcto</span>
+        <div class="alert alert-danger text-center" id="noedit-prov" style='display:none;'>
+                <span><i class="fas fa-times m-2"></i>Formato no soportado</span>
         </div>
-        <form id="form-confirmar" class="">
-          <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
-              </div>
-              <input id="oldpass" type="password" class="form-control" placeholder="Ingrese password actual">
-              <input type="hidden" id="id_user">
-              <input type="hidden" id="funcion">
+        <form id="form-logo" enctype="multipart/form-data">
+          <div class="input-group mb-3 ml-5 mt-2">
+               <input type="file" name="photo" class="input-group">
+               <input type="hidden" name="funcion" id="funcion">
+               <input type="hidden" name="id_logo_prov" id="id_logo_prov">
+               <input type="hidden" name="avatar" id="avatar">
           </div>
       </div>
       <div class="modal-footer">
@@ -54,6 +49,7 @@ if($_SESSION['us_tipo']==1 ||$_SESSION['us_tipo']==3 ){
     </div>
   </div>
 </div>
+
 Button trigger modal-->
 <div class="modal fade" id="crearproveedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -66,10 +62,10 @@ Button trigger modal-->
                 </button>
             </div>
             <div class="card-body">
-                <div class="alert alert-success text-center" id="add" style='display:none;'>
+                <div class="alert alert-success text-center" id="add-prov" style='display:none;'>
                         <span><i class="fas fa-check m-1" ></i>Se agrego correctamente</span>
                </div>
-                <div class="alert alert-danger text-center" id="noadd" style='display:none;'>
+                <div class="alert alert-danger text-center" id="noadd-prov" style='display:none;'>
                         <span><i class="fas fa-times m-2"></i>El Proveedor ya existe</span>
                 </div>
                 <form id="form-crear">
