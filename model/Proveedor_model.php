@@ -22,13 +22,8 @@ class Proveedor{
         }
 
     }
-    function editar($nombre,$id_editado){
-        $sql="UPDATE laboratorio SET nombre=:nombre where id_laboratorio=:id";
-        $query=$this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id_editado,':nombre'=>$nombre));
-        echo 'edit';
 
-    }
+    //buscar
     function buscar(){
 
         if(!empty($_POST['consulta'])){
@@ -47,6 +42,7 @@ class Proveedor{
         }
     } 
 
+    //cambiar logo
     function cambiar_logo($id, $nombre)
     {
         $sql = "UPDATE proveedor SET avatar=:nombre where id_proveedor=:id";
@@ -54,6 +50,7 @@ class Proveedor{
         $query->execute(array(':id' => $id, ':nombre' => $nombre));
     }
 
+    //borrar
     function borrar($id)
     {
         $sql = "DELETE FROM proveedor where id_proveedor=:id";
@@ -64,6 +61,33 @@ class Proveedor{
         } else {
             echo 'noborrado';
         }
+    }
+
+    //editar
+    function editar($id,$nombre,$telefono,$correo,$direccion){
+        $sql = "SELECT id_proveedor FROM proveedor where id_proveedor!=:id and nombre=:nombre";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id' => $id, ':nombre' => $nombre));
+        $this->objetos = $query->fetchall();
+        if (!empty($this->objetos)) {
+            echo 'noedit';
+        } else {
+            $sql = "UPDATE proveedor SET nombre=:nombre, telefono=:telefono, correo=:correo, direccion=:direccion where id_proveedor=:id";
+            $query = $this->acceso->prepare($sql);
+            $query->execute(array(
+                ':id' => $id,
+                ':nombre' => $nombre, ':telefono' => $telefono, ':correo' => $correo, ':direccion' => $direccion
+            ));
+            echo 'edit';
+        }
+    }
+
+    function rellenar_proveedores(){
+        $sql = "SELECT * FROM proveedor order by nombre asc";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
     }
 }
 

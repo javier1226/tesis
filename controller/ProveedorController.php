@@ -1,6 +1,8 @@
 <?php
 include '../model/Proveedor_model.php';
 $proveedor = new Proveedor();
+
+//crear
 if($_POST['funcion']=='crear'){
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
@@ -9,6 +11,17 @@ if($_POST['funcion']=='crear'){
     $avatar = 'prov_default.png';
 
     $proveedor->crear($nombre,$telefono,$correo,$direccion,$avatar);
+}
+
+//editar
+if($_POST['funcion']=='editar'){
+   $id=$_POST['id'];
+   $nombre = $_POST['nombre'];
+   $telefono = $_POST['telefono'];
+   $correo = $_POST['correo'];
+   $direccion = $_POST['direccion'];
+
+   $proveedor->editar($id,$nombre,$telefono,$correo,$direccion);
 }
 
 if($_POST['funcion']=='buscar'){
@@ -63,3 +76,16 @@ if ($_POST['funcion'] == 'cambiar_logo') {
     $id = $_POST['id'];
     $proveedor->borrar($id);
  }
+
+ if($_POST['funcion']=='rellenar_proveedores'){
+   $proveedor->rellenar_proveedores();
+   $json=array();
+   foreach($proveedor->objetos as $objeto){
+        $json[]=array(
+            'id'=>$objeto->id_proveedor,
+            'nombre'=>$objeto->nombre
+        );
+   }
+   $jsonstring=json_encode($json);
+   echo $jsonstring;
+}

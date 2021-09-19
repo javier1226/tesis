@@ -94,6 +94,15 @@ class Producto
         }
     }
 
+    function obtener_stock($id)
+    {
+        $sql = "SELECT SUM(stock) as total FROM lote where lote_id_prod =:id";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id' => $id));
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
     // function cambiar_logo($id,$nombre){
     //     $sql="SELECT avatar FROM laboratorio where id_laboratorio=:id";
     //     $query = $this->acceso->prepare($sql);
