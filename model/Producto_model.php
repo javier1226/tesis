@@ -103,6 +103,19 @@ class Producto
         return $this->objetos;
     }
 
+    function buscar_id($id)
+    {
+        $sql = "SELECT id_producto,producto.nombre as nombre,concentracion,adicional,precio, laboratorio.nombre as laboratorio,tipo_producto.nombre as tipo,presentacion.nombre as presentacion,producto.avatar as avatar, prod_lab, prod_tip_prod, prod_present
+           FROM producto
+           join laboratorio on prod_lab=id_laboratorio
+           join tipo_producto on prod_tip_prod=id_tip_prod
+           join presentacion on prod_present=id_presentacion where id_producto=:id";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id'=>$id));
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
     // function cambiar_logo($id,$nombre){
     //     $sql="SELECT avatar FROM laboratorio where id_laboratorio=:id";
     //     $query = $this->acceso->prepare($sql);

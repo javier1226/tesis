@@ -1,5 +1,8 @@
  <!-- Tell the browser to be responsive to screen width -->
  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+ <link rel="stylesheet" href="../css/compra.css">
+ <link rel="stylesheet" href="../css/main.css">
  <link rel="icon" href="../img/doctor.png" type="image/png">
 
  <!--<link rel="stylesheet" href="../css/main.css"> -->
@@ -35,12 +38,12 @@
          </li>
 
          <li class="nav-item dropdown" id="cat-carrito" style="display:none;">
-           <img src="../img/carrito.png" id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
-
+           <img src="../img/carrito.png" id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="imagen-carrito nav-link dropdown-toggle">
+           <span id="contador" class="contador badge badge-danger"></span>
            </img>
            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
 
-             <table class="table table-hover text-nowrap p-0">
+             <table class="carro table table-hover text-nowrap p-0">
                <thead class="table-success">
                  <tr>
                    <th>Codigo</th>
@@ -55,8 +58,8 @@
 
                </tbody>
              </table>
-             <a href="#" class="btn btn-danger btn-block">Procesar Compra</a>
-             <a href="#" class="btn btn-primary btn-block">Vaciar Carrito</a>
+             <a href="#" id="procesar-pedido" class="btn btn-danger btn-block">Procesar Compra</a>
+             <a href="#" id="vaciar-carrito" class="btn btn-primary btn-block">Vaciar Carrito</a>
            </ul>
          </li>
 

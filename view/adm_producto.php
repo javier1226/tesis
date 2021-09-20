@@ -116,7 +116,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
               <span><i class="fas fa-times m-1"></i>El producto ya existe</span>
             </div>
             <div class="alert alert-success text-center" id="edit_prod" style='display:none;'>
-              <span><i class="fas fa-times m-1"></i>Se edito correctamente</span>
+              <span><i class="fas fa-check m-1"></i>Se edito correctamente</span>
             </div>
             <form id="form-crear-producto">
               <div class="form-group">
@@ -133,7 +133,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
               </div>
               <div class="form-group">
                 <label form="precio">Precio</label>
-                <input id="precio" type="number" class="form-control" value='1' placeholder="Ingrese Precio" required>
+                <input id="precio" type="number" step="any" class="form-control" value='1' placeholder="Ingrese Precio" required>
               </div>
               <div class="form-group">
                 <label form="laboratorio">Laboratorio</label>
