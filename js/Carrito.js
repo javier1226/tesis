@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    calcularTotal();
     Contar_productos();
     RecuperarLS_carrito_compra();
     RecuperarLS_carrito();
@@ -68,6 +69,7 @@ $(document).ready(function () {
         elemento.remove();
         Eliminar_producto_LS(id);
         Contar_productos();
+        calcularTotal()
     })
 
     $(document).on('click', '#vaciar-carrito', (e) => {
@@ -78,6 +80,10 @@ $(document).ready(function () {
 
     $(document).on('click', '#procesar-pedido', (e) => {
         Procesa_pedido();
+    })
+
+    $(document).on('click', '#procesar-compra', (e) => {
+        Procesa_compra();
     })
 
     function RecuperarLS() {
@@ -178,10 +184,10 @@ $(document).ready(function () {
                 let template_compra = '';
                 let json = JSON.parse(response);
                 template_compra = `
-                        <tr prodId="${producto.id}">                
+                        <tr prodId="${producto.id}" prodPrecio="${json.precio}">                
                             <td>${json.nombre}</td>
                             <td>${json.stock}</td>
-                            <td>${json.precio}</td>
+                            <td class="precio">${json.precio}</td>
                             <td>${json.concentracion}</td>
                             <td>${json.adicional}</td>
                             <td>${json.laboratorio}</td>
@@ -197,22 +203,114 @@ $(document).ready(function () {
                 `;
                 $('#lista-compra').append(template_compra); //agrega un trozo de codigo, especificamente el template
             })
-        });        
+        });
     }
 
+    $(document).on('click', '#actualizar', (e) => {
+        let productos, precios;
+        precios = document.querySelectorAll('.precio');
+        productos = RecuperarLS();
+        productos.forEach(function (producto, indice) {
+            producto.precio = precios[indice].textContent;
+        });
+        localStorage.setItem('productos', JSON.stringify(productos));
+        calcularTotal();
+    })
+
     $('#cp').keyup((e) => {
-        let id, cantidad, producto, productos, montos;
+        let id, cantidad, producto, productos, montos, precio;
         producto = $(this)[0].activeElement.parentElement.parentElement;
         id = $(producto).attr('prodId');
+        precio = $(producto).attr('prodPrecio');
         cantidad = producto.querySelector('input').value;
         montos = document.querySelectorAll('.subtotales');
         productos = RecuperarLS();
         productos.forEach(function (prod, indice) {
             if (prod.id === id) {
                 prod.cantidad = cantidad;
+                prod.precio = precio;
                 montos[indice].innerHTML = `<h5>${cantidad*productos[indice].precio}</h5>`;
             }
         });
         localStorage.setItem('productos', JSON.stringify(productos));
+        calcularTotal();
     })
+
+    function calcularTotal() {
+        let productos, subtotal, con_igv, total_sindescuento, pago, vuelto, descuento;
+        let total = 0,
+            igv = 0.18;
+        productos = RecuperarLS();
+        productos.forEach(producto => {
+            let subtotal_producto = Number(producto.precio * producto.cantidad);
+            total = total + subtotal_producto;
+        });
+        pago = $('#pago').val();
+        descuento = $('#descuento').val();
+
+        total_sindescuento = total.toFixed(2);
+        con_igv = parseFloat(total * igv).toFixed(2);
+        subtotal = parseFloat(total - con_igv).toFixed(2);
+
+        total = total - descuento;
+        vuelto = pago - total;
+        $('#subtotal').html(subtotal);
+        $('#con_igv').html(con_igv);
+        $('#total_sin_descuento').html(total_sindescuento);
+        $('#total').html(total.toFixed(2));
+        $('#vuelto').html(vuelto.toFixed(2));
+
+    }
+
+    function Procesa_compra() {
+        let nombre, dni;
+        nombre = $('#cliente').val();
+        dni = $('#dni').val();
+        if (RecuperarLS().length == 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No hay productos, seleccione algunos!'
+            }).then(function () {
+                location.href = '../view/adm_catalogo.php';
+            })
+        } else if (nombre == '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Necesitamos un nombre de cliente!'
+            })
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Se realizo la compra',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+    }
+
+    function Verificar_stock() {
+        let productos, id, cantidad;
+        let error = 0;
+        funcion = 'verificar_stock';
+        productos = RecuperarLS();
+        productos.forEach(producto => {
+            id = producto.id;
+            cantidad = producto.cantidad;
+            $.ajax({
+                url: '../controlador/ProductoController.php',
+                data: {
+                    funcion,
+                    id,
+                    cantidad
+                },
+                type: 'POST',
+                success: function (response) {
+                    console.log(response);
+                }
+            })
+        });
+    }
 })
