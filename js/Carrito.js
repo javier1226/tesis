@@ -281,36 +281,79 @@ $(document).ready(function () {
                 text: 'Necesitamos un nombre de cliente!'
             })
         } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Se realizo la compra',
-                showConfirmButton: false,
-                timer: 1500
-            })
+            Verificar_stock().then(error=>{
+                if(error == 0){
+                    Registrar_compra(nombre, dni);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Se realizo la compra',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function () {
+                        ELiminar_LS();
+                        location.href = '../view/adm_catalogo.php';
+                    })
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hay conflicto en el stock de algun producto!'
+                    })
+                }
+            })            
         }
     }
 
+    /*
     function Verificar_stock() {
-        let productos, id, cantidad;
-        let error = 0;
+        //let productos, id, cantidad;
+        let productos;
+        //let error = 0;
         funcion = 'verificar_stock';
         productos = RecuperarLS();
         productos.forEach(producto => {
             id = producto.id;
             cantidad = producto.cantidad;
             $.ajax({
-                url: '../controlador/ProductoController.php',
+                url: '../controller/ProductoController.php',
                 data: {
                     funcion,
                     id,
                     cantidad
                 },
                 type: 'POST',
+                async: false, //sincroniza por la espera de las peticiones, sin embargo no es optimo
                 success: function (response) {
-                    console.log(response);
+                    error = error + Number(response);                    
                 }
             })
         });
+        return error;
+    }
+    */
+    async function Verificar_stock() {
+        let productos;
+        funcion = 'verificar_stock';
+        productos = RecuperarLS();
+        const response = await fetch('../controller/ProductoController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'funcion=' + funcion + '&&productos=' + JSON.stringify(productos)
+        })
+        let error = await response.text();
+        return error;
+    }
+
+    function Registrar_compra(nombre, dni){
+        funcion = 'registrar_compra';
+        let total = $('#total').get(0).textContent;
+        let productos = RecuperarLS();
+        let json = JSON.stringify(productos);
+        $.post('../controller/CompraController.php',{funcion, total, nombre, dni, json}, (response)=>{
+            console.log(response);
+        })
     }
 })

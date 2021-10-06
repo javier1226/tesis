@@ -30,7 +30,7 @@ if ($_POST['funcion'] == 'buscar') {
    $json = array();
    foreach ($producto->objetos as $objeto) {
       $producto->obtener_stock($objeto->id_producto);
-      foreach($producto->objetos as $obj){
+      foreach ($producto->objetos as $obj) {
          $total = $obj->total;
       }
       $json[] = array(
@@ -94,7 +94,7 @@ if ($_POST['funcion'] == 'buscar_id') {
    $json = array();
    foreach ($producto->objetos as $objeto) {
       $producto->obtener_stock($objeto->id_producto);
-      foreach($producto->objetos as $obj){
+      foreach ($producto->objetos as $obj) {
          $total = $obj->total;
       }
       $json[] = array(
@@ -113,6 +113,23 @@ if ($_POST['funcion'] == 'buscar_id') {
          'avatar' => '../img/prod/' . $objeto->avatar,
       );
    }
-   $jsonstring = json_encode($json[0]);//para que sea uno por uno es $json[0] si es todo en masa solo $json
+   $jsonstring = json_encode($json[0]); //para que sea uno por uno es $json[0] si es todo en masa solo $json
    echo $jsonstring;
+}
+
+if ($_POST['funcion'] == 'verificar_stock') {
+   $error = 0;
+   $productos = json_decode($_POST['productos']);
+   foreach ($productos as $objeto) {
+      $producto->obtener_stock($objeto->id);
+      foreach ($producto->objetos as $obj) {
+         $total = $obj->total;
+      }
+      if ($total >= $objeto->cantidad && $objeto->cantidad > 0) {
+         $error = $error + 0;
+      } else {
+         $error = $error + 1;
+      }
+   }
+   echo $error;
 }
