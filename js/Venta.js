@@ -1,4 +1,20 @@
 $(document).ready(function () {
+
+    mostrar_consultas();
+
+    function mostrar_consultas() {
+        let funcion = 'mostrar_consultas';
+        $.post('../controller/VentaController.php', {
+            funcion
+        }, (response) => {
+            const vistas = JSON.parse(response);
+            $('#venta_dia_vendedor').html(vistas.venta_dia_vendedor);
+            $('#venta_diaria').html(vistas.venta_diaria);
+            $('#venta_mensual').html(vistas.venta_mensual);
+            $('#venta_anual').html(vistas.venta_anual);
+        })
+    }
+
     let funcion = "listar";
 
     let datatable = $('#tabla_venta').DataTable({
@@ -28,13 +44,23 @@ $(document).ready(function () {
                 "data": "vendedor"
             },
             {
-                "defaultContent": `<button class="btn btn-secondary"><i class="fas fa-print"></i></button>
+                "defaultContent": `<button class="imprimir btn btn-secondary"><i class="fas fa-print"></i></button>
                                 <button class="ver btn btn-success" type="button" data-toggle="modal" data-target="#vista_venta"><i class="fas fa-search"></i></button>
                                 <button class="borrar btn btn-danger"><i class="fas fa-window-close"></i></button>`
             }
         ],
         "language": espanol
     });
+
+    $('#tabla_venta tbody').on('click', '.imprimir', function () {
+        let datos = datatable.row($(this).parents()).data();
+        let id = datos.id_venta;
+        $.post('../controller/PDFController.php',{id},(response)=>{
+            console.log(response);
+            window.open('../pdf/pdf-'+id+'.pdf','_blank');
+        })
+        
+    })
 
     $('#tabla_venta tbody').on('click', '.borrar', function () {
         let datos = datatable.row($(this).parents()).data();
@@ -58,14 +84,26 @@ $(document).ready(function () {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                $.post('../controller/DetalleVentaController.php', {funcion, id}, (response)=>{
+                $.post('../controller/DetalleVentaController.php', {
+                    funcion,
+                    id
+                }, (response) => {
                     console.log(response);
+                    if (response == 'delete') {
+                        swalWithBootstrapButtons.fire(
+                            'Eliminado!',
+                            'La venta: ' + id + ' ha sido eliminada',
+                            'success'
+                        )
+                    } else if (response == 'nodelete') {
+                        swalWithBootstrapButtons.fire(
+                            'No eliminado',
+                            'No tienes prioridad para eliminar esta venta',
+                            'error'
+                        )
+                    }
                 })
-                swalWithBootstrapButtons.fire(
-                    'Eliminado!',
-                    'La venta: '+id+' ha sido eliminada',
-                    'success'
-                )
+
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire(
                     'No eliminado',
