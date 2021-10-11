@@ -48,7 +48,7 @@ else{
                        <input type="password" name="pass" class="input">
                    </div>
                 </div>
-                <a href="../vista/recuperar.php">recuperar password</a>
+                <a href="../view/recuperar.php">recuperar password</a>
                 <a href="">Registrarse</a>
                 <input type="submit" class="btn" value="Iniciar sesión">
             </form>

@@ -125,4 +125,32 @@ class Venta
         $this->objetos = $query->fetchall();
         return $this->objetos;
     }
+
+    function ventas_anual()
+    {
+        $sql = "SELECT SUM(total) as cantidad, month(fecha) as mes FROM venta WHERE year(fecha)=year(date_add(curdate(), INTERVAL -1 YEAR)) GROUP BY month(fecha)";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
+    function producto_mas_vendido()
+    {
+        $sql = "SELECT nombre, concentracion, adicional, SUM(cantidad) as total FROM `venta`
+        JOIN venta_producto ON id_venta = venta_id_venta
+        JOIN producto ON id_producto = producto_id_producto
+        WHERE year(fecha) = year(curdate()) and month(fecha) = month(curdate())
+        GROUP BY producto_id_producto ORDER BY total DESC LIMIT 5";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
+    
+
+
+
+    
 }

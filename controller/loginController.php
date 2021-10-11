@@ -1,45 +1,42 @@
 <?php
 include_once '../model/usuario_model.php';
 session_start();
-$user= $_POST['user'];
-$pass= $_POST['pass'];
-$usuario =new Usuario();
-if(!empty($_SESSION['us_tipo'])){
-    
+$user = $_POST['user'];
+$pass = $_POST['pass'];
+$usuario = new Usuario();
+if (!empty($_SESSION['us_tipo'])) {
+
     switch ($_SESSION['us_tipo']) {
         case 1:
             header('Location: ../view/adm_catalogo.php');
             break;
         case 2:
-            header('Location: ../view/tec_catalogo.php');
+            header('Location: ../view/adm_catalogo.php');
             break;
         case 3:
             header('Location: ../view/adm_catalogo.php');
             break;
     }
-}
-else{
-    $usuario->Loguearse($user,$pass);
-    if (!empty($usuario->objetos)) {
+} else {
+    if (!empty($usuario->Loguearse($user, $pass) == "logueado")) {
+        $usuario->obtener_dato_logueado($user);
         foreach ($usuario->objetos as $objeto) {
-           $_SESSION['usuario']=$objeto->id_usuario;
-           $_SESSION['us_tipo']=$objeto->us_tipo;
-           $_SESSION['nombre_us']=$objeto->nombre_us;
+            $_SESSION['usuario'] = $objeto->id_usuario;
+            $_SESSION['us_tipo'] = $objeto->us_tipo;
+            $_SESSION['nombre_us'] = $objeto->nombre_us;
         }
         switch ($_SESSION['us_tipo']) {
             case 1:
                 header('Location: ../view/adm_catalogo.php');
                 break;
             case 2:
-                header('Location: ../view/tec_catalogo.php');
+                header('Location: ../view/adm_catalogo.php');
                 break;
             case 3:
                 header('Location: ../view/adm_catalogo.php');
                 break;
         }
-    }
-    else{
+    } else {
         header('Location: ../view/login.php');
     }
 }
-?>

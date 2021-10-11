@@ -361,19 +361,67 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
+    $(document).on('click','#button-reporte',(e)=>{
+        Mostrar_Loader("generarReportePDF");
+        funcion = 'reporte_producto';
+        $.post('../controller/ProductoController.php',{funcion},(response)=>{
+            console.log(response);
+            if(response==""){
+                Cerrar_Loader("exito_reporte");
+                window.open('../pdf/reportes-producto/pdf-'+funcion+'.pdf','_blank');
+            }else{
+                Cerrar_Loader("error_reporte");
+            }
+            
+        })
+    });
 
-    // $(document).on("click", ".avatar", (e) => {
-    //     funcion = "cambiar_logo";
-    //     const elemento = $(this)[0].activeElement.parentElement.parentElement;
-    //     const id = $(elemento).attr('labId');
-    //     const nombre = $(elemento).attr('labNombre');
-    //     const avatar = $(elemento).attr('labAvatar');
-    //     $('#logoactual').attr('src', avatar);
-    //     $('#nombre_logo').html(nombre);
-    //     $('#funcion').val(funcion);
-    //     $('#id_logo_lab').val(id);
+    function Mostrar_Loader(Mensaje) {
+        var texto = null;
+        var mostrar = false;
+        switch (Mensaje) {
+            case 'generarReportePDF':
+                texto = 'Se está generando el reporte en formato PDF, por favor espere...';
+                mostrar = true;
+                break;
+                //default:
+                //    break;
+        }
+        if (mostrar) {
+            Swal.fire({
+                title: 'Generando reporte',
+                text: texto,
+                showConfirmButton: false
+            })
+        }
+    }
 
-    // });
-
-
+    function Cerrar_Loader(Mensaje) {
+        var tipo = null;
+        var texto = null;
+        var mostrar = false;
+        switch (Mensaje) {
+            case 'exito_reporte':
+                tipo = 'success';
+                texto = 'El reporte fue generado correctamente.';
+                mostrar = true;
+                break;
+            case 'error_reporte':
+                tipo = 'error';
+                texto = 'El reporte no pudo generarse, comuniquese con el personal de sistemas.';
+                mostrar = true;
+                break;
+            default:
+                swal.close();
+                break;
+        }
+        if (mostrar) {
+            Swal.fire({
+                position: 'center',
+                icon: tipo,                
+                text: texto,
+                showConfirmButton: false
+            })
+        }
+    }
 })

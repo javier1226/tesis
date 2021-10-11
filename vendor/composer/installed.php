@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ac9619ad6dfccb219c85ca836f0044c2a490be16',
+        'reference' => '96c1efa4848583aee732e1c7ee897a23fd87f5e2',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ac9619ad6dfccb219c85ca836f0044c2a490be16',
+            'reference' => '96c1efa4848583aee732e1c7ee897a23fd87f5e2',
             'dev_requirement' => false,
         ),
         'mpdf/mpdf' => array(
@@ -47,6 +47,15 @@
             'install_path' => __DIR__ . '/../paragonie/random_compat',
             'aliases' => array(),
             'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+            'dev_requirement' => false,
+        ),
+        'phpmailer/phpmailer' => array(
+            'pretty_version' => 'v6.5.1',
+            'version' => '6.5.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
+            'aliases' => array(),
+            'reference' => 'dd803df5ad7492e1b40637f7ebd258fee5ca7355',
             'dev_requirement' => false,
         ),
         'psr/log' => array(

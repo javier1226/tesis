@@ -1,5 +1,6 @@
 <?php
 include '../model/Producto_model.php';
+require_once('../vendor/autoload.php');
 $producto = new Producto();
 if ($_POST['funcion'] == 'crear') {
    $nombre = $_POST['nombre'];
@@ -132,4 +133,106 @@ if ($_POST['funcion'] == 'verificar_stock') {
       }
    }
    echo $error;
+}
+
+if ($_POST['funcion'] == 'traer_productos') {
+   $html = "";
+   $productos = json_decode($_POST['productos']);
+   foreach ($productos as $resultado) {
+      $producto->buscar_id($resultado->id);
+      foreach ($producto->objetos as $objeto) {
+         $subtotal = $objeto->precio * $resultado->cantidad;
+         $producto->obtener_stock($objeto->id_producto);
+         foreach ($producto->objetos as $obj) {
+            $stock = $obj->total;
+         }
+         $html .= "
+         <tr prodId='$objeto->id_producto' prodPrecio='$objeto->precio'>                
+                            <td>$objeto->nombre</td>
+                            <td>$stock</td>
+                            <td class='precio'>$objeto->precio</td>
+                            <td>$objeto->concentracion</td>
+                            <td>$objeto->adicional</td>
+                            <td>$objeto->laboratorio</td>
+                            <td>$objeto->presentacion</td>
+                            <td>
+                                <input type='number' min='1' class='form-control cantidad_producto' value='$resultado->cantidad'>
+                            </td>
+                            <td class='subtotales'>
+                                <h5>$subtotal</h5>
+                            </td>
+                            <td><button class='borrar-producto btn btn-danger'><i class='fas fa-times-circle'></button></td>                
+                        </tr>
+         ";
+      }
+   }
+   echo $html;
+}
+
+if ($_POST['funcion'] == 'reporte_producto') {
+   date_default_timezone_set('America/Lima');
+   $fecha = date('Y-m-d H:i:s');
+   $html = '
+   <header>
+      <div id="logo">
+      <img src="../img/doctor.png" width="60" height="60">
+      </div>
+      <h1>REPORTE DE PROTUCTOS</h1>
+      <div id="project">
+         <div>
+            <span>Fecha y Hora: </span>' . $fecha . '
+         </div>
+      </div>
+   </header>
+   <table>
+      <thead>
+         <tr>
+            <th>Nº</th>
+            <th>Producto</th>
+            <th>Concentración</th>
+            <th>Adicional</th>
+            <th>Laboratorio</th>
+            <th>Presentación</th>
+            <th>Tipo</th>
+            <th>Stock</th>
+            <th>Precio</th>
+         </tr>
+      </thead>
+      <tbody>
+
+      
+   ';
+   $producto->reporte_producto();
+   $contador = 0;
+   foreach ($producto->objetos as $objeto) {
+      $contador++;
+      $producto->obtener_stock($objeto->id_producto);
+      foreach ($producto->objetos as $obj) {
+         $stock = $obj->total;
+      }
+      $html .= '
+         <tr>
+            <td class="servic">' . $contador . '</td>
+            <td class="servic">' . $objeto->nombre . '</td>
+            <td class="servic">' . $objeto->concentracion . '</td>
+            <td class="servic">' . $objeto->adicional . '</td>
+            <td class="servic">' . $objeto->laboratorio . '</td>
+            <td class="servic">' . $objeto->presentacion . '</td>
+            <td class="servic">' . $objeto->tipo . '</td>
+            <td class="servic">' . $stock . '</td>
+            <td class="servic">' . $objeto->precio . '</td>
+         </tr>      
+      ';
+   }
+   $html .= '
+      </tbody>
+   </table>
+   ';
+   $css = file_get_contents("../css/pdf.css");
+
+   $mpdf = new \Mpdf\Mpdf();
+
+   $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+   $mpdf->WriteHTML($html, \Mpdf\HTMLParserMode::HTML_BODY);
+   $mpdf->Output("../pdf/reportes-producto/pdf-" . $_POST['funcion'] . ".pdf", "F");
 }

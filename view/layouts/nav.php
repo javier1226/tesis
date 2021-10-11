@@ -1,5 +1,7 @@
  <!-- Tell the browser to be responsive to screen width -->
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="icon" href="../img/doctor.png" type="image/png">
+ <link rel="stylesheet" href="../css/animate.min.css">
  <link rel="stylesheet" href="../css/datatables.css">
  <link rel="stylesheet" href="../css/compra.css">
  <link rel="stylesheet" href="../css/main.css">
@@ -17,6 +19,7 @@
  <!-- overlayScrollbars -->
  <link rel="stylesheet" href="../css/adminlte.min.css">
  <!-- Google Font: Source Sans Pro -->
+
 
  </head>
 
@@ -109,7 +112,7 @@
                  </p>
                </a>
              </li>
-             <li class="nav-item">
+             <li id="gestion_usuario" class="nav-item">
                <a href="adm_usuario.php" class="nav-link">
                  <i class="nav-icon fas fa-users"></i>
                  <p>
@@ -131,7 +134,7 @@
 
              <li class="nav-header">Almacen</li>
 
-             <li class="nav-item">
+             <li id="gestion_producto" class="nav-item">
                <a href="adm_producto.php" class="nav-link">
                  <i class="nav-icon fas fa-pills"></i>
                  <p>
@@ -139,7 +142,7 @@
                  </p>
                </a>
              </li>
-             <li class="nav-item">
+             <li id="gestion_atributo" class="nav-item">
                <a href="adm_atributo.php" class="nav-link">
                  <i class="nav-icon fas fa-vials"></i>
                  <p>
@@ -147,7 +150,7 @@
                  </p>
                </a>
              </li>
-             <li class="nav-item">
+             <li id="gestion_lote" class="nav-item">
                <a href="adm_lote.php" class="nav-link">
                  <i class="nav-icon fas fa-cubes"></i>
                  <p>
@@ -158,7 +161,7 @@
 
              <li class="nav-header">Compras</li>
 
-             <li class="nav-item">
+             <li id="gestion_proveedor" class="nav-item">
                <a href="adm_proveedor.php" class="nav-link">
                  <i class="nav-icon fas fa-truck"></i>
                  <p>

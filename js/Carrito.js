@@ -109,6 +109,7 @@ $(document).ready(function () {
         funcion = "buscar_id";
         productos.forEach(producto => {
             id_producto = producto.id;
+            //console.log(response);
             $.post('../controller/ProductoController.php', {
                 funcion,
                 id_producto
@@ -170,40 +171,19 @@ $(document).ready(function () {
         }
     }
 
-    function RecuperarLS_carrito_compra() {
-        let productos, id_producto;
+    async function RecuperarLS_carrito_compra() {
+        let productos;
         productos = RecuperarLS();
-        funcion = "buscar_id";
-        productos.forEach(producto => {
-            id_producto = producto.id;
-            $.post('../controller/ProductoController.php', {
-                funcion,
-                id_producto
-            }, (response) => {
-                //console.log(response);
-                let template_compra = '';
-                let json = JSON.parse(response);
-                template_compra = `
-                        <tr prodId="${producto.id}" prodPrecio="${json.precio}">                
-                            <td>${json.nombre}</td>
-                            <td>${json.stock}</td>
-                            <td class="precio">${json.precio}</td>
-                            <td>${json.concentracion}</td>
-                            <td>${json.adicional}</td>
-                            <td>${json.laboratorio}</td>
-                            <td>${json.presentacion}</td>
-                            <td>
-                                <input type="number" min="1" class="form-control cantidad_producto" value="${producto.cantidad}">
-                            </td>
-                            <td class="subtotales">
-                                <h5>${json.precio*producto.cantidad}</h5>
-                            </td>
-                            <td><button class="borrar-producto btn btn-danger"><i class="fas fa-times-circle"></button></td>                
-                        </tr>
-                `;
-                $('#lista-compra').append(template_compra); //agrega un trozo de codigo, especificamente el template
-            })
-        });
+        funcion = "traer_productos";
+        const response = await fetch('../controller/ProductoController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'funcion=' + funcion + '&&productos=' + JSON.stringify(productos)
+        })
+        let resultado = await response.text();
+        $('#lista-compra').append(resultado);
     }
 
     $(document).on('click', '#actualizar', (e) => {
@@ -281,8 +261,8 @@ $(document).ready(function () {
                 text: 'Necesitamos un nombre de cliente!'
             })
         } else {
-            Verificar_stock().then(error=>{
-                if(error == 0){
+            Verificar_stock().then(error => {
+                if (error == 0) {
                     Registrar_compra(nombre, dni);
                     Swal.fire({
                         position: 'center',
@@ -294,14 +274,14 @@ $(document).ready(function () {
                         ELiminar_LS();
                         location.href = '../view/adm_catalogo.php';
                     })
-                }else{
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Hay conflicto en el stock de algun producto!'
                     })
                 }
-            })            
+            })
         }
     }
 
@@ -347,12 +327,18 @@ $(document).ready(function () {
         return error;
     }
 
-    function Registrar_compra(nombre, dni){
+    function Registrar_compra(nombre, dni) {
         funcion = 'registrar_compra';
         let total = $('#total').get(0).textContent;
         let productos = RecuperarLS();
         let json = JSON.stringify(productos);
-        $.post('../controller/CompraController.php',{funcion, total, nombre, dni, json}, (response)=>{
+        $.post('../controller/CompraController.php', {
+            funcion,
+            total,
+            nombre,
+            dni,
+            json
+        }, (response) => {
             console.log(response);
         })
     }

@@ -111,41 +111,22 @@ class Producto
            join tipo_producto on prod_tip_prod=id_tip_prod
            join presentacion on prod_present=id_presentacion where id_producto=:id";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id));
+        $query->execute(array(':id' => $id));
         $this->objetos = $query->fetchall();
         return $this->objetos;
     }
 
-    // function cambiar_logo($id,$nombre){
-    //     $sql="SELECT avatar FROM laboratorio where id_laboratorio=:id";
-    //     $query = $this->acceso->prepare($sql);
-    //     $query->execute(array(':id'=>$id));
-    //     $this->objetos=$query->fetchall();
+    function reporte_producto()
+    {
 
-    //         $sql="UPDATE laboratorio SET avatar=:nombre where id_laboratorio=:id";
-    //         $query=$this->acceso->prepare($sql);
-    //         $query->execute(array(':id'=>$id,':nombre'=>$nombre));
-    //     return $this->objetos;
-    // }
-    // function borrar($id){
-    //     $sql="DELETE FROM laboratorio where id_laboratorio=:id";
-    //     $query=$this->acceso->prepare($sql);
-    //     $query->execute(array(':id'=>$id));
-    //     if(!empty($query->execute(array(':id'=>$id)))){
-    //      echo 'borrado';
-
-    //     }else{
-    //         echo 'noborrado';
-    //     }
-    // }
-
-    // function rellenar_laboratorios(){
-    //     $sql="SELECT * FROM laboratorio order by nombre asc";
-    //     $query = $this->acceso->prepare($sql);
-    //     $query->execute();
-    //     $this->objetos=$query->fetchall();
-    //     return $this->objetos;
-
-    // }
-
+        $sql = "SELECT id_producto,producto.nombre as nombre,concentracion,adicional,precio, laboratorio.nombre as laboratorio,tipo_producto.nombre as tipo,presentacion.nombre as presentacion,producto.avatar as avatar, prod_lab, prod_tip_prod, prod_present
+           FROM producto
+           join laboratorio on prod_lab=id_laboratorio
+           join tipo_producto on prod_tip_prod=id_tip_prod
+           join presentacion on prod_present=id_presentacion and producto.nombre not like '' ORDER BY producto.nombre";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['us_tipo'] == 3 || $_SESSION['us_tipo'] == 1) {
+if ($_SESSION['us_tipo'] == 3) {
     include_once 'layouts/header.php';
 ?>
 
@@ -48,6 +48,18 @@ if ($_SESSION['us_tipo'] == 3 || $_SESSION['us_tipo'] == 1) {
                                 <h2>Top 3 vendedor del mes</h2>
                                 <div class="chart-responsive">
                                     <canvas id="Grafico2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <h2>Comparativa de meses con el año anterior</h2>
+                                <div class="chart-responsive">
+                                    <canvas id="Grafico3" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <h2>Los 5 productos mas vendidos en el mes</h2>
+                                <div class="chart-responsive">
+                                    <canvas id="Grafico4" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ $(document).ready(function() {
     function buscar_usuario(dato) {
         funcion = 'buscar_usuario';
         $.post('../controller/UsuarioController.php', { dato, funcion }, (response) => {
-            console.log(response);
+            //console.log(response);
             let nombre = '';
             let apellidos = '';
             let edad = '';

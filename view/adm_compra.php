@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
+if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3|| $_SESSION['us_tipo'] == 2) {
     include_once 'layouts/header.php';
 ?>
 
@@ -55,7 +55,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
                                         </div>
                                         <div class="form-group row">
                                             <span>Vendedor: </span>
-                                            <h3>usuario</h3>
+                                            <h3><?php echo ($_SESSION['nombre_us']);?></h3>
                                         </div>
                                     </div>
                                 </header>
