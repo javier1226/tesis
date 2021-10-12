@@ -4,14 +4,12 @@ include_once '../model/VentaProducto_model.php';
 $venta_producto = new VentaProducto();
 
 if ($_POST['funcion'] == 'ver') {
-
-    $id=$_POST['id'];
+    $id = $_POST['id'];
     $venta_producto->ver($id);
-    $json=array();
+    $json = array();
     foreach ($venta_producto->objetos as $objeto) {
         $json[] = $objeto;
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;
 }
-?>

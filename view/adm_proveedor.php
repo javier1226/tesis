@@ -126,7 +126,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
           <div class="card-header">
             <h3 class="card-title">Buscar proveedor</h3>
             <div class="input-group">
-              <input type="text" id="buscar_proveedor" class="form-control float-left" placeholder="Ingrese nombre de proveedor">
+              <input type="text" id="buscar-proveedor" class="form-control float-left" placeholder="Ingrese nombre de proveedor">
               <div class="input-group-append">
                 <button class="btn btn-default"><i class="fas fa-search"></i></button>
               </div>

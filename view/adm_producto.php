@@ -23,7 +23,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
           <div class="card-body">
             <div class="form-group text-center">
               <button id="button-reporte" class="btn btn-outline-danger">Formato PDF<i class="far fa-file-pdf ml-2"></i></button>
-              <button class="btn btn-outline-success">Formato Excel<i class="far fa-file-excel ml-2"></i></button>
+              <button id="button-reporteExcel" class="btn btn-outline-success">Formato Excel<i class="far fa-file-excel ml-2"></i></button>
             </div>
           </div>
 

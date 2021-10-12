@@ -41,7 +41,7 @@ if ($_SESSION['us_tipo'] == 3 || $_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo
                             <span id="vendedor"></span>
                         </div>
 
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap">// responsive
                             <thead class="table-success">
                                 <tr>
                                     <th>Cantidad: </th>

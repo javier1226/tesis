@@ -12,6 +12,7 @@ $(document).ready(function() {
         }
 
         $.post('../controller/PresentacionController.php', { nombre_presentacion, id_editado, funcion }, (response) => {
+            //console.log(response);
             if (response == 'add') {
                 $('#add-presentacion').hide('slow');
                 $('#add-presentacion').show(1000);

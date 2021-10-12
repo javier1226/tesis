@@ -12,7 +12,7 @@ class VentaProducto
 
     function ver($id)
     {
-        $sql = "SELECT precio, cantidad, producto.nombre as producto, concentracion, adicional, laboratorio.nombre as laboratorio, presentacion.nombre as presentacion, tipo_producto.nombre as tipo, subtotal
+        $sql = "SELECT venta_producto.precio as precio, cantidad, producto.nombre as producto, concentracion, adicional, laboratorio.nombre as laboratorio, presentacion.nombre as presentacion, tipo_producto.nombre as tipo, subtotal
         FROM venta_producto
         join producto on producto_id_producto = id_producto and venta_id_venta =:id
         join laboratorio on prod_lab = id_laboratorio

@@ -2,6 +2,8 @@ $(document).ready(function () {
     $('#aviso').hide();
     $('#aviso1').hide();
     $('#form-recuperar').submit(e => {
+        $('#aviso').hide();
+        $('#aviso1').hide();
         Mostrar_Loader('Recuperar_password');
         let email = $('#email-recuperar').val();
         let dni = $('#dni-recuperar').val();
@@ -100,7 +102,7 @@ $(document).ready(function () {
         if (mostrar) {
             Swal.fire({
                 position: 'center',
-                icon: tipo,                
+                icon: tipo,
                 text: texto,
                 showConfirmButton: false
             })

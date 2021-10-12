@@ -6,6 +6,7 @@ $(document).ready(function() {
         let nombre_laboratorio = $('#nombre-laboratorio').val();
         funcion = 'crear';
         $.post('../controller/LaboratorioController.php', { nombre_laboratorio, funcion }, (response) => {
+            console.log(response);
             if (response == 'add') {
                 $('#add-laboratorio').hide('slow');
                 $('#add-laboratorio').show(1000);

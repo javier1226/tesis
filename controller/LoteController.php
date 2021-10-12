@@ -1,6 +1,5 @@
 <?php
 include '../model/Lote_model.php';
-date_default_timezone_set('America/Lima');
 $lote = new Lote();
 
 if ($_POST['funcion'] == 'crear') {
@@ -20,11 +19,13 @@ if ($_POST['funcion'] == 'editar') {
 if ($_POST['funcion'] == 'buscar') {
     $lote->buscar();
     $json = array();
-    $fecha_actual = new DateTime("now"); //revisar
-    $fecha_actual->format('Y-m-d');
+    date_default_timezone_set('America/Lima');
+    $fecha = date('Y-m-d H:i:s');
+    $fecha_actual = new DateTime($fecha); //revisar
+    //$fecha_actual->format('Y-m-d');
     foreach ($lote->objetos as $objeto) {
         $vencimiento = new DateTime($objeto->vencimiento);
-        $vencimiento->format('Y-m-d'); //revisar
+        //$vencimiento->format('Y-m-d'); //revisar
         $diferencia = $vencimiento->diff($fecha_actual);
         $mes = $diferencia->m;
         $dia = $diferencia->d;

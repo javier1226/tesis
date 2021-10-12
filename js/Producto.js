@@ -85,7 +85,7 @@ $(document).ready(function () {
         let presentacion = $('#presentacion').val();
         //console.log(nombre + " " + concentracion + " " + adicional + " " + precio + "  " + laboratorio + "  " + tipo + "  " + presentacion);
         //funcion = "crear";
-        if (edit = true) {
+        if (edit == true) {
             funcion = "editar";
         } else {
             funcion = "crear";
@@ -101,12 +101,15 @@ $(document).ready(function () {
             tipo,
             presentacion
         }, (response) => {
-
+            //console.log(response);
             if (response == 'add') {
                 $('#add').hide('slow');
                 $('#add').show(1000);
                 $('#add').hide(2000);
                 $('#form-crear-producto').trigger('reset');
+                $('#laboratorio').val('').trigger('change');
+                $('#tipo').val('').trigger('change');
+                $('#presentacion').val('').trigger('change');
                 buscar_producto();
             }
             if (response == 'edit') {
@@ -114,6 +117,9 @@ $(document).ready(function () {
                 $('#edit_prod').show(1000);
                 $('#edit_prod').hide(2000);
                 $('#form-crear-producto').trigger('reset');
+                $('#laboratorio').val('').trigger('change');
+                $('#tipo').val('').trigger('change');
+                $('#presentacion').val('').trigger('change');
                 buscar_producto();
             }
             if (response == 'noadd') {
@@ -305,6 +311,7 @@ $(document).ready(function () {
                     id,
                     funcion
                 }, (response) => {
+                    console.log(response);
                     edit = false;
                     if (response == 'borrado') {
                         swalWithBootstrapButtons.fire(
@@ -316,7 +323,7 @@ $(document).ready(function () {
                     } else {
                         swalWithBootstrapButtons.fire(
                             'No se pudo borrar!',
-                            'El producto ' + nombre + 'no fue borrado porque esta siendo usado en un lote.',
+                            'El producto ' + nombre + 'no fue borrado porque stock disponible.',
                             'error'
                         )
 
@@ -376,6 +383,22 @@ $(document).ready(function () {
         })
     });
 
+
+    $(document).on('click','#button-reporteExcel',(e)=>{
+        //Mostrar_Loader("generarReporteExcel");
+        funcion = 'reporte_productoExcel';
+        $.post('../controller/ProductoController.php',{funcion},(response)=>{
+            console.log(response);
+            if(response==""){
+                //Cerrar_Loader("exito_reporte");
+                window.open('../Excel/reporte_productos.xlsx','_blank');
+            }else{
+                //Cerrar_Loader("error_reporte");
+            }
+            
+        })
+    });
+
     function Mostrar_Loader(Mensaje) {
         var texto = null;
         var mostrar = false;
@@ -418,7 +441,7 @@ $(document).ready(function () {
         if (mostrar) {
             Swal.fire({
                 position: 'center',
-                icon: tipo,                
+                icon: tipo,
                 text: texto,
                 showConfirmButton: false
             })
