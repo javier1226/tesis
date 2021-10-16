@@ -297,3 +297,16 @@ if ($_POST['funcion'] == 'reporte_productoExcel') {
    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
    $writer->save('../Excel/' . $nombre_archivo);
 }
+
+if ($_POST['funcion'] == 'rellenar_productos') {
+   $producto->rellenar_productos();
+   $json = array();
+   foreach ($producto->objetos as $objeto) {
+      //var_dump($objeto);
+      $json[] = array(         
+         'nombre' => $objeto->id_producto . ' | ' . $objeto->nombre . ' | ' . $objeto->concentracion . ' | ' . $objeto->adicional . ' | ' . $objeto->laboratorio . ' | ' . $objeto->presentacion
+      );
+   }
+   $jsonstring = json_encode($json);
+   echo $jsonstring;
+}

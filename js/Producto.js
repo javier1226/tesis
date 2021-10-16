@@ -145,6 +145,7 @@ $(document).ready(function () {
             consulta,
             funcion
         }, (response) => {
+            //console.log(response);
             const productos = JSON.parse(response);
             let template = '';
             productos.forEach(producto => {
@@ -180,9 +181,6 @@ $(document).ready(function () {
                       <button  class="editar btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#crearproducto">
                         <i class="fas fa-pencil-alt"></i> 
                       </button>
-                      <button  class="lote btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#crearlote">
-                      <i class="fas fa-plus-square"></i> 
-                      </button>
                       <button  class="borrar btn btn-sm btn-danger">
                         <i class="fas fa-trash-alt"></i> 
                       </button>
@@ -216,15 +214,6 @@ $(document).ready(function () {
         $('#avatar').val(avatar);
         $('#logoactual').attr('src', avatar);
         $('#nombre_logo').html(nombre);
-        //console.log(id + ' ' + avatar);
-    });
-
-    $(document).on('click', '.lote', (e) => {
-        const elemento = $(this)[0].activeElement.parentElement.parentElement.parentElement.parentElement;
-        const id = $(elemento).attr('prodId');
-        const nombre = $(elemento).attr('prodNombre');
-        $('#id_lote_prod').val(id);
-        $('#nombre_producto_lote').html(nombre);
         //console.log(id + ' ' + avatar);
     });
 
@@ -344,58 +333,38 @@ $(document).ready(function () {
     });
 
 
-    //Crear lote
-    $('#form-crear-lote').submit(e => {
-        let id_producto = $('#id_lote_prod').val();
-        let proveedor = $('#proveedor').val();
-        let stock = $('#stock').val();
-        let vencimiento = $('#vencimiento').val();
-        funcion = 'crear';
-        $.post('../controller/LoteController.php', {
-            funcion,
-            vencimiento,
-            stock,
-            proveedor,
-            id_producto
-        }, (response) => {
-            $('#add-lote').hide('slow');
-            $('#add-lote').show(1000);
-            $('#add-lote').hide(2000);
-            $('#form-crear-lote').trigger('reset');
-            buscar_producto();
-        })
-
-        e.preventDefault();
-    });
-
-    $(document).on('click','#button-reporte',(e)=>{
+    $(document).on('click', '#button-reporte', (e) => {
         Mostrar_Loader("generarReportePDF");
         funcion = 'reporte_producto';
-        $.post('../controller/ProductoController.php',{funcion},(response)=>{
+        $.post('../controller/ProductoController.php', {
+            funcion
+        }, (response) => {
             console.log(response);
-            if(response==""){
+            if (response == "") {
                 Cerrar_Loader("exito_reporte");
-                window.open('../pdf/reportes-producto/pdf-'+funcion+'.pdf','_blank');
-            }else{
+                window.open('../pdf/reportes-producto/pdf-' + funcion + '.pdf', '_blank');
+            } else {
                 Cerrar_Loader("error_reporte");
             }
-            
+
         })
     });
 
 
-    $(document).on('click','#button-reporteExcel',(e)=>{
+    $(document).on('click', '#button-reporteExcel', (e) => {
         //Mostrar_Loader("generarReporteExcel");
         funcion = 'reporte_productoExcel';
-        $.post('../controller/ProductoController.php',{funcion},(response)=>{
+        $.post('../controller/ProductoController.php', {
+            funcion
+        }, (response) => {
             console.log(response);
-            if(response==""){
+            if (response == "") {
                 //Cerrar_Loader("exito_reporte");
-                window.open('../Excel/reporte_productos.xlsx','_blank');
-            }else{
+                window.open('../Excel/reporte_productos.xlsx', '_blank');
+            } else {
                 //Cerrar_Loader("error_reporte");
             }
-            
+
         })
     });
 

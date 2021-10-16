@@ -42,3 +42,31 @@ if ($_POST['funcion'] == 'crear') {
 
     $cliente->crear($nombre, $apellidos, $dni, $edad, $telefono, $correo, $sexo, $adicional, $avatar);
 }
+
+//editar
+if ($_POST['funcion'] == 'editar') {
+    $id = $_POST['id'];
+    $telefono = $_POST['telefono'];
+    $correo = $_POST['correo'];
+    $adicional = $_POST['adicional'];
+
+    $cliente->editar($id, $telefono, $correo, $adicional);
+}
+
+if ($_POST['funcion'] == 'borrar') {
+    $id = $_POST['id'];
+    $cliente->borrar($id);
+}
+
+if ($_POST['funcion'] == 'rellenar_clientes') {    
+    $cliente->rellenar_clientes();
+    $json = array();
+    foreach ($cliente->objetos as $objeto) {        
+        $json[] = array(
+            'id' => $objeto->id,
+            'nombre' => $objeto->nombre . ' ' . $objeto->apellidos .' | '. $objeto->dni
+        );
+    }
+    $jsonstring = json_encode($json);
+    echo $jsonstring;
+}

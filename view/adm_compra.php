@@ -44,13 +44,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3|| $_SESSION['us_tipo'
                                         <div class="form-group row">
                                             <span>Cliente: </span>
                                             <div class="input-group-append col-md-6">
-                                                <input type="text" class="form-control" id="cliente" placeholder="Ingresa nombre">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <span>DNI: </span>
-                                            <div class="input-group-append col-md-6">
-                                                <input type="number" class="form-control" id="dni" placeholder="Ingresa DNI">
+                                                <select id="cliente" class="form-control select2" style="width: 100%;"></select>
                                             </div>
                                         </div>
                                         <div class="form-group row">

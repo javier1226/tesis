@@ -1,5 +1,5 @@
 <?php
-include 'Conexion.php';
+include_once 'Conexion.php';
 class Cliente
 {
     var $objetos;
@@ -54,5 +54,57 @@ class Cliente
             $query->execute(array(':nombre' => $nombre, ':apellidos' => $apellidos, ':dni' => $dni, ':edad' => $edad, ':telefono' => $telefono, ':correo' => $correo, ':sexo' => $sexo, ':adicional' => $adicional, ':avatar' => $avatar));
             echo 'add';
         }
+    }
+
+    //editar
+    function editar($id, $telefono, $correo, $adicional)
+    {
+        $sql = "SELECT id FROM cliente where id=:id";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id' => $id));
+        $this->objetos = $query->fetchall();
+        if (empty($this->objetos)) {
+            echo 'noedit';
+        } else {
+            $sql = "UPDATE cliente SET telefono=:telefono, correo=:correo, adicional=:adicional where id=:id";
+            $query = $this->acceso->prepare($sql);
+            $query->execute(array(
+                ':id' => $id, ':telefono' => $telefono, ':correo' => $correo, ':adicional' => $adicional
+            ));
+            echo 'edit';
+        }
+    }
+
+    //borrar
+    function borrar($id)
+    {
+        $sql = "UPDATE cliente SET estado = 'I' where id=:id";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id' => $id));
+        if (!empty($query->execute(array(':id' => $id)))) {
+            echo 'borrado';
+        } else {
+            echo 'noborrado';
+        }
+    }
+
+    //borrar
+    function rellenar_clientes()
+    {
+        $sql = "SELECT * FROM cliente WHERE estado = 'A' ORDER BY nombre ASC";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
+    //borrar
+    function buscar_datos_cliente($id_cliente)
+    {
+        $sql = "SELECT * FROM cliente WHERE id=:id_cliente";
+        $query = $this->acceso->prepare($sql);
+        $query->execute(array(':id_cliente' => $id_cliente));
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
     }
 }

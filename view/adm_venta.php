@@ -41,7 +41,7 @@ if ($_SESSION['us_tipo'] == 3 || $_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo
                             <span id="vendedor"></span>
                         </div>
 
-                        <table class="table table-hover text-nowrap">// responsive
+                        <table class="table table-hover text-nowrap table-responsive">
                             <thead class="table-success">
                                 <tr>
                                     <th>Cantidad: </th>
@@ -205,5 +205,5 @@ if ($_SESSION['us_tipo'] == 3 || $_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo
     header('Location: ../index.php');
 }
 ?>
-<script src="../js/datatables.js"></script>
+
 <script src="../js/Venta.js"></script>

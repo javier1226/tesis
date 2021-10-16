@@ -20,6 +20,7 @@
 <script src="../js/sweetalert2.js"></script>
 <!-- Select2 -->
 <script src="../js/select2.js"></script>
+<script src="../js/datatables.js"></script>
 </body>
 
 <script>

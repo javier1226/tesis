@@ -1,5 +1,6 @@
  <!-- Tell the browser to be responsive to screen width -->
  <meta name="viewport" content="width=device-width, initial-scale=1">
+
  <link rel="icon" href="../img/doctor.png" type="image/png">
  <link rel="stylesheet" href="../css/animate.min.css">
  <link rel="stylesheet" href="../css/datatables.css">
@@ -75,7 +76,7 @@
      <!-- /.navbar -->
 
      <!-- Main Sidebar Container -->
-     <aside class="main-sidebar sidebar-dark-primary elevation-4">
+     <aside class="main-sidebar sidebar-dark-primary elevation-4"  style="position: fixed;">
        <!-- Brand Logo -->
        <a href="../view/adm_catalogo.php" class="brand-link">
          <img src="../img/doctor.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -174,6 +175,15 @@
                  <i class="nav-icon fas fa-truck"></i>
                  <p>
                    Gestión proveedor
+                 </p>
+               </a>
+             </li>
+
+             <li id="gestion_compra" class="nav-item">
+               <a href="adm_compras.php" class="nav-link">
+                 <i class="nav-icon fas fa-people-carry"></i>
+                 <p>
+                   Gestión compras
                  </p>
                </a>
              </li>

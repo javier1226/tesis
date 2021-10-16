@@ -32,52 +32,6 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
     </div>
   </div>
 
-  <!-- Button trigger modal crear Lote-->
-  <div class="modal fade" id="crearlote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="card card-success">
-          <div class="card-header">
-            <h3 class="card-title">Crear Lote</h3>
-            <button data-dismiss="modal" aria-label="close" class="close">
-              <span araia-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="card-body">
-            <div class="alert alert-success text-center" id="add-lote" style='display:none;'>
-              <span><i class="fas fa-check m-1"></i>Se agrego correctamente</span>
-            </div>
-
-            <form id="form-crear-lote">
-              <div class="form-group">
-                <label form="nombre_producto_lote">Producto: </label>
-                <label id="nombre_producto_lote">Nombre de producto</label>
-              </div>
-              <div class="form-group">
-                <label form="proveedor">Proveedor: </label>
-                <select name="proveedor" id="proveedor" class="form-control select2" style="width:100%"></select>
-              </div>
-              <div class="form-group">
-                <label form="stock">Stock: </label>
-                <input id="stock" type="number" class="form-control" placeholder="Ingrese Stock">
-              </div>
-              <div class="form-group">
-                <label form="vencimiento">Vencimiento</label>
-                <input id="vencimiento" type="date" class="form-control" placeholder="Ingrese vencimiento">
-              </div>
-              <input type="hidden" id="id_lote_prod">
-
-          </div>
-          <div class="card-footer">
-            <button type="submit" class="btn bg-gradient-primary float-right m-2">Guardar</button>
-            <button type="button" data-dismiss="modal" class="btn btn-outline-secondary float-right m-2">Cerrar </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal de cambio de logo -->
   <div class="modal fade" id="cambiologo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -191,7 +145,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3) {
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>Gestión producto <button id="button-crear" type="button" data-toggle="modal" data-target="#crearproducto" class="btn bg-gradient-primary ml-2">Crear producto</button>
-              <button type="button" data-toggle="modal" data-target="#modalFormatoReporte" class="btn bg-gradient-success ml-2">Resporte de productos</button>
+              <button type="button" data-toggle="modal" data-target="#modalFormatoReporte" class="btn bg-gradient-success ml-2">Reporte de productos</button>
             </h1>
 
           </div>

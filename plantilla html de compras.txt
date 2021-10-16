@@ -1,0 +1,88 @@
+$plantilla='
+    <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="'.$avatar.'" width="60" height="60">
+      </div>
+      <h1>COMPRA N. '.$codigo.'</h1>
+      <div id="company" class="clearfix">
+        <div id="negocio">'.$proveedor.'</div>
+        <div>'.$direccion.'</div>
+        <div>'.$telefono.'</div>
+        <div><a href="mailto:company@example.com">'.$correo.'</a></div>
+      </div>';
+      $plantilla.='
+    
+      <div id="project">
+        <div><span>Codigo de compra: </span>'.$codigo.'</div>
+        <div><span>Fecha compra: </span>'.$fecha_compra.'</div>
+        <div><span>Fecha entrega: </span>'.$fecha_entrega.'</div>
+        <div><span>Estado: </span>'.$estado.'</div>
+      </div>';
+    
+    $plantilla.='
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+           
+            <th class="service">#</th>
+            <th class="service">Codigo</th>
+            <th class="service">Cantidad</th>
+            <th class="service">Vencimiento</th>
+            <th class="service">Precio de compra</th>
+            <th class="service">Producto</th>
+            <th class="service">Laboratorio</th>
+            <th class="service">Presentacion</th>
+            <th class="service">Tipo</th>
+          </tr>
+        </thead>
+        <tbody>';
+        foreach ($lote->objetos as $objeto) {
+         
+          $plantilla.='<tr>
+            
+            <td class="servic">'.$objeto->producto.'</td>
+            <td class="servic">'.$objeto->codigo.'</td>
+            <td class="servic">'.$objeto->cantidad.'</td>
+            <td class="servic">'.$objeto->vencimiento.'</td>
+            <td class="servic">'.$objeto->precio_compra.'</td>
+            <td class="servic">'.$objeto->producto.'|'.$objeto->concentracion.'|'.$objeto->adicional.'</td>
+            <td class="servic">'.$objeto->laboratorio.'</td>
+            <td class="servic">'.$objeto->presentacion.'</td>
+            <td class="servic">'.$objeto->tipo.'</td>
+          </tr>';
+        }
+
+          $igv=$total*0.18;
+          $sub=$total-$igv;
+          
+          $plantilla.='
+          <tr>
+            <td colspan="8" class="grand total">SUBTOTAL</td>
+            <td class="grand total">S/.'.$sub.'</td>
+          </tr>
+          <tr>
+            <td colspan="8" class="grand total">IGV(18%)</td>
+            <td class="grand total">S/.'.$igv.'</td>
+          </tr>
+          <tr>
+            <td colspan="8" class="grand total">TOTAL</td>
+            <td class="grand total">S/.'.$total.'</td>
+          </tr>';
+
+
+       $plantilla.='
+        </tbody>
+      </table>
+      <div id="notices">
+        <div>NOTICE:</div>
+        <div class="notice">*.</div>
+
+      </div>
+    </main>
+    <footer>
+      Created by Warpiece (Juan Diego Polo Cosme) Ingeniero Informatico y Analista desarrollador.
+    </footer>
+  </body>';

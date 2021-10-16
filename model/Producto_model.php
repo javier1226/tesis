@@ -115,7 +115,7 @@ class Producto
 
     function obtener_stock($id)
     {
-        $sql = "SELECT SUM(stock) as total FROM lote where lote_id_prod =:id";
+        $sql = "SELECT SUM(cantidad_lote) as total FROM lote where id_producto =:id";
         $query = $this->acceso->prepare($sql);
         $query->execute(array(':id' => $id));
         $this->objetos = $query->fetchall();
@@ -143,6 +143,20 @@ class Producto
            join laboratorio on prod_lab=id_laboratorio
            join tipo_producto on prod_tip_prod=id_tip_prod
            join presentacion on prod_present=id_presentacion and producto.nombre not like '' ORDER BY producto.nombre";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
+
+    //borrar
+    function rellenar_productos()
+    {
+        $sql = "SELECT id_producto,producto.nombre as nombre,concentracion,adicional,precio, laboratorio.nombre as laboratorio,tipo_producto.nombre as tipo,presentacion.nombre as presentacion
+           FROM producto
+           join laboratorio on prod_lab=id_laboratorio
+           join tipo_producto on prod_tip_prod=id_tip_prod
+           join presentacion on prod_present=id_presentacion ORDER BY nombre ASC";
         $query = $this->acceso->prepare($sql);
         $query->execute();
         $this->objetos = $query->fetchall();

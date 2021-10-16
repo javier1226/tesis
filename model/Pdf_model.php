@@ -1,14 +1,17 @@
 <?php
 include_once('Venta_model.php');
 include_once('VentaProducto_model.php');
+include_once('Cliente_model.php');
 
 function getHtml($id_venta)
 {
-    $venta = new Venta();
-    $venta_producto = new VentaProducto();
-    $venta->buscar_id($id_venta);
-    $venta_producto->ver($id_venta);
-    $plantilla = '
+  $venta = new Venta();
+  $venta_producto = new VentaProducto();
+  $cliente = new Cliente();
+
+  $venta->buscar_id($id_venta);
+  $venta_producto->ver($id_venta);
+  $plantilla = '
         <body>
         <header class="clearfix">
         <div id="logo">
@@ -21,18 +24,28 @@ function getHtml($id_venta)
             <div>(344) 342234</div>
             <div><a href="mailto:company@example.com">company@example.com</a></div>
         </div>';
-    foreach ($venta->objetos as $objeto) {
-        $plantilla .= '
+  foreach ($venta->objetos as $objeto) {
+    if (empty($objeto->id_cliente)) {
+      $cliente_nombre = $objeto->cliente;
+      $cliente_dni = $objeto->dni;
+    } else {
+      $cliente->buscar_datos_cliente($objeto->id_cliente);
+      foreach ($cliente->objetos as $cli) {
+        $cliente_nombre = $cli->nombre . ' ' . $cli->apellidos;
+        $cliente_dni = $cli->dni;
+      }
+    }
+    $plantilla .= '
     
         <div id="project">
             <div><span>Codigo de Venta: </span>' . $objeto->id_venta . '</div>
-            <div><span>Cliente: </span>' . $objeto->cliente . '</div>
-            <div><span>DNI: </span>' . $objeto->dni . '</div>
+            <div><span>Cliente: </span>' . $cliente_nombre . '</div>
+            <div><span>DNI: </span>' . $cliente_dni . '</div>
             <div><span>Fecha y Hora: </span>' . $objeto->fecha . '</div>
             <div><span>Vendedor: </span>' . $objeto->vendedor . '</div>
         </div>';
-    }
-    $plantilla .= '
+  }
+  $plantilla .= '
     </header>
     <main>
       <table>
@@ -50,9 +63,9 @@ function getHtml($id_venta)
           </tr>
         </thead>
         <tbody>';
-    foreach ($venta_producto->objetos as $objeto) {
+  foreach ($venta_producto->objetos as $objeto) {
 
-        $plantilla .= '<tr>
+    $plantilla .= '<tr>
             
             <td class="servic">' . $objeto->producto . '</td>
             <td class="servic">' . $objeto->concentracion . '</td>
@@ -64,14 +77,14 @@ function getHtml($id_venta)
             <td class="servic">' . $objeto->precio . '</td>
             <td class="servic">' . $objeto->subtotal . '</td>
           </tr>';
-    }
-    $calculos = new Venta();
-    $calculos->buscar_id($id_venta);
-    foreach ($calculos->objetos as $objeto) {
-        $igv = $objeto->total * 0.18;
-        $sub = $objeto->total - $igv;
+  }
+  $calculos = new Venta();
+  $calculos->buscar_id($id_venta);
+  foreach ($calculos->objetos as $objeto) {
+    $igv = $objeto->total * 0.18;
+    $sub = $objeto->total - $igv;
 
-        $plantilla .= '
+    $plantilla .= '
           <tr>
             <td colspan="8" class="grand total">SUBTOTAL</td>
             <td class="grand total">S/.' . $sub . '</td>
@@ -84,8 +97,8 @@ function getHtml($id_venta)
             <td colspan="8" class="grand total">TOTAL</td>
             <td class="grand total">S/.' . $objeto->total . '</td>
           </tr>';
-    }
-    $plantilla .= '
+  }
+  $plantilla .= '
         </tbody>
       </table>
       <div id="notices">
@@ -100,5 +113,6 @@ function getHtml($id_venta)
       Created by Warpiece (Juan Diego Polo Cosme) Ingeniero Informatico y Analista desarrollador.
     </footer>
   </body>';
-    return $plantilla;
+  return $plantilla;
 }
+
