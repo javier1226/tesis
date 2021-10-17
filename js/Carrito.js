@@ -20,6 +20,7 @@ $(document).ready(function () {
         const avatar = $(elemento).attr('prodAvatar');
         const stock = $(elemento).attr('prodStock');
 
+    
         const producto = {
             id: id,
             nombre: nombre,

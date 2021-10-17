@@ -95,7 +95,7 @@ class Producto
 
     function borrar($id)
     {
-        $sql = "SELECT * FROM lote WHERE lote_id_prod =:id";
+        $sql = "SELECT * FROM lote WHERE id_producto =:id";
         $query = $this->acceso->prepare($sql);
         $query->execute(array(':id' => $id));
         $lote = $query->fetchall();
@@ -115,7 +115,7 @@ class Producto
 
     function obtener_stock($id)
     {
-        $sql = "SELECT SUM(cantidad_lote) as total FROM lote where id_producto =:id";
+        $sql = "SELECT SUM(cantidad_lote) as total FROM lote where id_producto =:id and estado = 'A'";
         $query = $this->acceso->prepare($sql);
         $query->execute(array(':id' => $id));
         $this->objetos = $query->fetchall();
@@ -154,7 +154,7 @@ class Producto
     {
         $sql = "SELECT id_producto,producto.nombre as nombre,concentracion,adicional,precio, laboratorio.nombre as laboratorio,tipo_producto.nombre as tipo,presentacion.nombre as presentacion
            FROM producto
-           join laboratorio on prod_lab=id_laboratorio
+           join laboratorio on prod_lab=id_laboratorio and producto.estado = 'A'
            join tipo_producto on prod_tip_prod=id_tip_prod
            join presentacion on prod_present=id_presentacion ORDER BY nombre ASC";
         $query = $this->acceso->prepare($sql);

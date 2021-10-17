@@ -66,21 +66,14 @@ class Proveedor
     //borrar
     function borrar($id)
     {
-        $sql = "SELECT * FROM lote WHERE lote_id_prod=:id";
+
+        $sql = "UPDATE proveedor SET estado = 'I' where id_proveedor=:id";
         $query = $this->acceso->prepare($sql);
         $query->execute(array(':id' => $id));
-        $lote = $query->fetchall();
-        if (!empty($lote)) {
-            echo 'noborrado';
+        if (!empty($query->execute(array(':id' => $id)))) {
+            echo 'borrado';
         } else {
-            $sql = "UPDATE proveedor SET estado = 'I' where id_proveedor=:id";
-            $query = $this->acceso->prepare($sql);
-            $query->execute(array(':id' => $id));
-            if (!empty($query->execute(array(':id' => $id)))) {
-                echo 'borrado';
-            } else {
-                echo 'noborrado';
-            }
+            echo 'noborrado';
         }
     }
 
@@ -106,7 +99,7 @@ class Proveedor
 
     function rellenar_proveedores()
     {
-        $sql = "SELECT * FROM proveedor order by nombre asc";
+        $sql = "SELECT * FROM proveedor WHERE estado = 'A' order by nombre asc";
         $query = $this->acceso->prepare($sql);
         $query->execute();
         $this->objetos = $query->fetchall();

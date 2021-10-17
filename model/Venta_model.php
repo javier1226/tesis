@@ -103,7 +103,7 @@ class Venta
     {
         $sql = "SELECT id_venta, fecha, cliente, dni, total, CONCAT(usuario.nombre_us,' ',usuario.apellidos_us) as vendedor, id_cliente FROM venta join usuario on vendedor=id_usuario and id_venta=:id_venta";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(':id_venta'=>$id_venta));
+        $query->execute(array(':id_venta' => $id_venta));
         $this->objetos = $query->fetchall();
         return $this->objetos;
     }
@@ -164,7 +164,15 @@ class Venta
         return $this->objetos;
     }
 
-
-
-    
+    function monto_costo()
+    {
+        $sql = "SELECT SUM(det_cantidad * precio_compra) as monto_costo
+        FROM detalle_venta 
+        join venta on id_det_venta = id_venta and year(fecha) = year(curdate()) and month(fecha) = month(curdate())
+        join lote on id__det_lote = lote.id";
+        $query = $this->acceso->prepare($sql);
+        $query->execute();
+        $this->objetos = $query->fetchall();
+        return $this->objetos;
+    }
 }

@@ -204,6 +204,7 @@ $(document).ready(function () {
                     id,
                     funcion
                 }, (response) => {
+                    console.log(response);
                     if (response == 'borrado') {
                         swalWithBootstrapButtons.fire(
                             'Borrado!',

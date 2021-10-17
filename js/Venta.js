@@ -1,65 +1,76 @@
 $(document).ready(function () {
 
     mostrar_consultas();
-
+    listar_venas();
+    var datatable;
     function mostrar_consultas() {
         let funcion = 'mostrar_consultas';
         $.post('../controller/VentaController.php', {
             funcion
         }, (response) => {
+            console.log(response);
             const vistas = JSON.parse(response);
-            $('#venta_dia_vendedor').html((vistas.venta_dia_vendedor*1).toFixed(2));
-            $('#venta_diaria').html((vistas.venta_diaria*1).toFixed(2));
-            $('#venta_mensual').html((vistas.venta_mensual*1).toFixed(2));
-            $('#venta_anual').html((vistas.venta_anual*1).toFixed(2));
+            $('#venta_dia_vendedor').html((vistas.venta_dia_vendedor * 1).toFixed(2));
+            $('#venta_diaria').html((vistas.venta_diaria * 1).toFixed(2));
+            $('#venta_mensual').html((vistas.venta_mensual * 1).toFixed(2));
+            $('#venta_anual').html((vistas.venta_anual * 1).toFixed(2));
+            $('#ganancia_mensual').html((vistas.ganancia_mensual * 1).toFixed(2));
         })
     }
 
-    let funcion = "listar";
+    function listar_venas() {
 
-    let datatable = $('#tabla_venta').DataTable({
-        "ajax": {
-            "url": "../controller/VentaController.php",
-            "method": "POST",
-            "data": {
-                funcion: funcion
-            }
-        },
-        "columns": [{
-                "data": "id_venta"
+        let funcion = "listar";
+        datatable = $('#tabla_venta').DataTable({
+            "ajax": {
+                "url": "../controller/VentaController.php",
+                "method": "POST",
+                "data": {
+                    funcion: funcion
+                }
             },
-            {
-                "data": "fecha"
-            },
-            {
-                "data": "cliente"
-            },
-            {
-                "data": "dni"
-            },
-            {
-                "data": "total"
-            },
-            {
-                "data": "vendedor"
-            },
-            {
-                "defaultContent": `<button class="imprimir btn btn-secondary"><i class="fas fa-print"></i></button>
-                                <button class="ver btn btn-success" type="button" data-toggle="modal" data-target="#vista_venta"><i class="fas fa-search"></i></button>
-                                <button class="borrar btn btn-danger"><i class="fas fa-window-close"></i></button>`
-            }
-        ],
-        "language": espanol
-    });
+            "columns": [{
+                    "data": "id_venta"
+                },
+                {
+                    "data": "fecha"
+                },
+                {
+                    "data": "cliente"
+                },
+                {
+                    "data": "dni"
+                },
+                {
+                    "data": "total"
+                },
+                {
+                    "data": "vendedor"
+                },
+                {
+                    "defaultContent": `<button class="imprimir btn btn-secondary"><i class="fas fa-print"></i></button>
+                                    <button class="ver btn btn-success" type="button" data-toggle="modal" data-target="#vista_venta"><i class="fas fa-search"></i></button>
+                                    <button class="borrar btn btn-danger"><i class="fas fa-window-close"></i></button>`
+                }
+            ],
+            "destroy": true,
+            "language": espanol
+        });
+    }
+
+
+
 
     $('#tabla_venta tbody').on('click', '.imprimir', function () {
         let datos = datatable.row($(this).parents()).data();
         let id = datos.id_venta;
-        $.post('../controller/PDFController.php',{id},(response)=>{
+        $.post('../controller/PDFController.php', {
+            id
+        }, (response) => {
             console.log(response);
-            window.open('../pdf/pdf-'+id+'.pdf','_blank');
+            window.open('../pdf/pdf-' + id + '.pdf', '_blank');
         })
-        
+
     })
 
     $('#tabla_venta tbody').on('click', '.borrar', function () {
@@ -95,6 +106,7 @@ $(document).ready(function () {
                             'La venta: ' + id + ' ha sido eliminada',
                             'success'
                         )
+                        listar_venas();
                     } else if (response == 'nodelete') {
                         swalWithBootstrapButtons.fire(
                             'No eliminado',
@@ -129,6 +141,7 @@ $(document).ready(function () {
             funcion,
             id
         }, (response) => {
+            console.log(response);
             let registros = JSON.parse(response);
             let template = "";
             $('#registros').html(template);

@@ -51,9 +51,11 @@ if ($_POST['funcion'] == 'buscar_lotes_riesgos') {
         $vencimiento = new DateTime($objeto->vencimiento);
         //$vencimiento->format('Y-m-d'); //revisar
         $diferencia = $vencimiento->diff($fecha_actual);
+        $anio = $diferencia->y;
         $mes = $diferencia->m;
         $dia = $diferencia->d;
         $verificado = $diferencia->invert;
+        $estado = 'light';
         if ($verificado == 0) {
             $estado = 'danger';
             $mes = $mes * (-1);
@@ -63,7 +65,7 @@ if ($_POST['funcion'] == 'buscar_lotes_riesgos') {
                 $estado = 'light';
                 $dia++; //revisar
             }
-            if ($mes <= 3) {
+            if ($mes <= 3 && $anio == 0) {
                 $estado = 'warning';
                 $dia++; //revisar
             }
@@ -105,9 +107,11 @@ if ($_POST['funcion'] == 'buscar') {
         $vencimiento = new DateTime($objeto->vencimiento);
         //$vencimiento->format('Y-m-d'); //revisar
         $diferencia = $vencimiento->diff($fecha_actual);
+        $anio = $diferencia->y;
         $mes = $diferencia->m;
         $dia = $diferencia->d;
         $verificado = $diferencia->invert;
+        $estado = 'light';
         if ($verificado == 0) {
             $estado = 'danger';
             $mes = $mes * (-1);
@@ -117,7 +121,7 @@ if ($_POST['funcion'] == 'buscar') {
                 $estado = 'light';
                 $dia++; //revisar
             }
-            if ($mes <= 3) {
+            if ($mes <= 3 && $anio == 0) {
                 $estado = 'warning';
                 $dia++; //revisar
             }
@@ -136,6 +140,7 @@ if ($_POST['funcion'] == 'buscar') {
             'tipo' => $objeto->tip_nom,
             'presentacion' => $objeto->pre_nom,
             'avatar' => '../img/prod/' . $objeto->logo,
+            'anio' => $anio,
             'mes' => $mes,
             'dia' => $dia,
             'estado' => $estado

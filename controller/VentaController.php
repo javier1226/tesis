@@ -19,7 +19,7 @@ if ($_POST['funcion'] == 'listar') {
         } else {
             $cliente->buscar_datos_cliente($objeto->id_cliente);
             foreach ($cliente->objetos as $cli) {
-                $cliente_nombre = $cli->nombre.' '.$cli->apellidos;
+                $cliente_nombre = $cli->nombre . ' ' . $cli->apellidos;
                 $cliente_dni = $cli->dni;
             }
         }
@@ -49,15 +49,21 @@ if ($_POST['funcion'] == 'mostrar_consultas') {
     foreach ($venta->objetos as $objeto) {
         $venta_mensual = $objeto->venta_mensual;
     }
-    $venta->venta_anual();
+    $venta->monto_costo();
+    $monto_costo = '';
+    foreach ($venta->objetos as $objeto) {
+        $monto_costo = $objeto->monto_costo;
+    }
 
+    $venta->venta_anual();
     $json = array();
     foreach ($venta->objetos as $objeto) {
         $json[] = array(
             'venta_dia_vendedor' => $venta_dia_vendedor,
             'venta_diaria' => $venta_diaria,
             'venta_mensual' => $venta_mensual,
-            'venta_anual' => $objeto->venta_anual
+            'venta_anual' => $objeto->venta_anual,
+            'ganancia_mensual' => $venta_mensual - $monto_costo
         );
     }
     $jsonstring = json_encode($json[0]);
