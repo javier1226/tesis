@@ -157,7 +157,7 @@ $(document).ready(function () {
         id = codigo[0];
         funcion = 'imprimir';
         $.post('../controller/ComprasController.php',{id, funcion},(response)=>{
-            console.log(response);
+            //console.log(response);
             window.open('../pdf/pdf-compra-'+id+'.pdf','_blank');
         })
         

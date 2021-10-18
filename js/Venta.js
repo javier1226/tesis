@@ -8,7 +8,7 @@ $(document).ready(function () {
         $.post('../controller/VentaController.php', {
             funcion
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             const vistas = JSON.parse(response);
             $('#venta_dia_vendedor').html((vistas.venta_dia_vendedor * 1).toFixed(2));
             $('#venta_diaria').html((vistas.venta_diaria * 1).toFixed(2));
@@ -67,7 +67,7 @@ $(document).ready(function () {
         $.post('../controller/PDFController.php', {
             id
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             window.open('../pdf/pdf-' + id + '.pdf', '_blank');
         })
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
                     funcion,
                     id
                 }, (response) => {
-                    console.log(response);
+                    //console.log(response);
                     if (response == 'delete') {
                         swalWithBootstrapButtons.fire(
                             'Eliminado!',
@@ -141,7 +141,7 @@ $(document).ready(function () {
             funcion,
             id
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             let registros = JSON.parse(response);
             let template = "";
             $('#registros').html(template);

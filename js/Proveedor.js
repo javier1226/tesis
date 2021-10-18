@@ -21,7 +21,7 @@ $(document).ready(function () {
             direccion,
             funcion
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             if (response == 'add') {
                 $('#add-prov').hide('slow');
                 $('#add-prov').show(1000);
@@ -204,7 +204,7 @@ $(document).ready(function () {
                     id,
                     funcion
                 }, (response) => {
-                    console.log(response);
+                    //console.log(response);
                     if (response == 'borrado') {
                         swalWithBootstrapButtons.fire(
                             'Borrado!',

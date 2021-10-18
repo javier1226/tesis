@@ -223,7 +223,7 @@ $(document).ready(function () {
                                         productosString,
                                         descripcionString
                                     }, (response) => {
-                                        console.log(response);
+                                        //console.log(response);
                                         if (response == 'add') {
                                             Swal.fire({
                                                 position: 'center',

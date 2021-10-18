@@ -46,6 +46,7 @@ if ($_SESSION['us_tipo'] == 1 || $_SESSION['us_tipo'] == 3|| $_SESSION['us_tipo'
                   <th>Proveedor</th>
                   <th>Mes</th>
                   <th>Dias</th>
+                  <th>Hora</th>
                 </tr>
 
               </thead>

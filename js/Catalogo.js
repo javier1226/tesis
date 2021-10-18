@@ -97,6 +97,9 @@ $(document).ready(function () {
           {
             "data": "dia"
           },
+          {
+            "data": "hora"
+          },
         ],
         "columnDefs": [
           {

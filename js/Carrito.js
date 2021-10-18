@@ -249,6 +249,7 @@ $(document).ready(function () {
 
     function Procesa_compra() {
         let cliente = $('#cliente').val();
+        //console.log(cliente);
         if (RecuperarLS().length == 0) {
             Swal.fire({
                 icon: 'error',
@@ -341,7 +342,8 @@ $(document).ready(function () {
             cliente,
             json
         }, (response) => {
-            console.log(response);
+            //console.log(cliente);
+            //console.log(response);
         })
     }
 

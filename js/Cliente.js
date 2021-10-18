@@ -137,7 +137,7 @@ $(document).ready(function () {
       adicional,
       funcion
     }, (response) => {
-      console.log(response);
+      //console.log(response);
       if (response == 'edit') {
         $('#edit-cli').hide('slow');
         $('#edit-cli').show(1000);

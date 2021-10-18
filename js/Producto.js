@@ -300,7 +300,7 @@ $(document).ready(function () {
                     id,
                     funcion
                 }, (response) => {
-                    console.log(response);
+                    //console.log(response);
                     edit = false;
                     if (response == 'borrado') {
                         swalWithBootstrapButtons.fire(
@@ -339,7 +339,7 @@ $(document).ready(function () {
         $.post('../controller/ProductoController.php', {
             funcion
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             if (response == "") {
                 Cerrar_Loader("exito_reporte");
                 window.open('../pdf/reportes-producto/pdf-' + funcion + '.pdf', '_blank');
@@ -357,7 +357,7 @@ $(document).ready(function () {
         $.post('../controller/ProductoController.php', {
             funcion
         }, (response) => {
-            console.log(response);
+            //console.log(response);
             if (response == "") {
                 //Cerrar_Loader("exito_reporte");
                 window.open('../Excel/reporte_productos.xlsx', '_blank');
